@@ -1,0 +1,26 @@
+{
+  "name": "graphql-mocker",
+  "version": "1.0.0",
+  "description": "Library that takes a raw document schema of a graphql schema (built using Graphene) and converts it into any number of mocked documents.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AchintyaAshok/GraphQL-Mocker.git"
+  },
+  "keywords": [
+    "GraphQL",
+    "Mock",
+    "Mocker",
+    "Graphene",
+    "JSON"
+  ],
+  "author": "Achintya Ashok",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AchintyaAshok/GraphQL-Mocker/issues"
+  },
+  "homepage": "https://github.com/AchintyaAshok/GraphQL-Mocker#readme"
+}

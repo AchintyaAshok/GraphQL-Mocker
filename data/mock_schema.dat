@@ -1,0 +1,345 @@
+schema {
+  query: SearchQuery
+}
+
+type AltLanguage {
+  headline: String
+  url: String
+  blurb: String
+  bigBlurb: String
+  slug: String
+  language: String
+}
+
+input BoundingBox {
+  top_left: Coordinate!
+  bottom_right: Coordinate!
+}
+
+type CMSItemAnimatedGIFToken {
+  tokenGUID: String
+  type: String
+  animatedGifId: String
+  headline: String
+  lowRes: String
+  highRes: String
+  autoAnimate: Boolean
+  href: String
+}
+
+type CMSItemContributor {
+  contributors: [CMSItemContributorID]
+  source: String
+}
+
+type CMSItemContributorID {
+  name: String
+  twitter: String
+}
+
+type CMSItemHyperLinkToken {
+  tokenGUID: String
+  type: String
+  href: String
+  hrefMobile: String
+}
+
+type CMSItemIncludeHTMLToken {
+  tokenGUID: String
+  type: String
+  href: String
+  includeHtmlId: String
+}
+
+type CMSItemKeyword {
+  type: String
+  value: String
+  displayName: String
+}
+
+union CMSItemMedia = CMSItemMediaPhoto
+
+type CMSItemMediaPhoto {
+  type: String
+  image: CMSItemMediaPhotoImage
+}
+
+type CMSItemMediaPhotoImage {
+  title: String
+  altText: String
+  cuts(dimensions: [String], max_width: Int, max_height: Int, min_width: Int, min_height: Int): [ImageCut]
+}
+
+type CMSItemPhotoToken {
+  tokenGUID: String
+  type: String
+  photoId: ID
+  secondary: Boolean
+  internalName: String
+  title: String
+  altText: String
+  caption: String
+  credit: String
+  hrefVal: String
+  cuts(dimensions: [String]): [ImageCut]
+}
+
+type CMSItemPlayerCardToken {
+  tokenGUID: String
+  type: String
+  id: ID
+  teamId: ID
+  name: String
+  seoName: String
+}
+
+enum CMSItemState {
+  A
+  D
+}
+
+type CMSItemThirdPartyToken {
+  tokenGUID: String
+  type: String
+  subType: String
+  embedId: String
+  href: String
+}
+
+union CMSItemToken = CMSItemPhotoToken | CMSItemPlayerCardToken | CMSItemHyperLinkToken | CMSItemVideoToken | CMSItemThirdPartyToken | CMSItemIncludeHTMLToken | CMSItemAnimatedGIFToken
+
+type CMSItemVideoToken {
+  tokenGUID: String
+  type: String
+  videoId: ID
+  href: String
+  tags(type: [String]): [CMSItemKeyword]
+  date: Date
+  headline: String
+  duration: String
+  blurb: String
+  bigBlurb: String
+  mediaPlaybackId: ID
+  image: CMSItemMediaPhotoImage
+  mediaURLS(name: [String]): [CMSMediaURL]
+}
+
+union CMSListedItem = video | article
+
+type CMSMediaURL {
+  name: String
+  href: String
+}
+
+type CMSTopicListPageConfig {
+  sponsored: Boolean
+  mixedPlaylist: Boolean
+  fillBySearch: Boolean
+  live: Boolean
+  chatKey: String
+  wayinKey: String
+  pollKey: String
+}
+
+type CMSVideoPlaybackScenario {
+  url: String
+  width: ID
+  height: ID
+  name: String
+}
+
+input Coordinate {
+  lat: Float!
+  lon: Float!
+}
+
+scalar Date
+
+type ImageCut {
+  src: String
+  height: Int
+  width: Int
+  at2x: String
+  aspectRatio: String
+  at3x: String
+  dimensions: String
+}
+
+scalar OmniScalar
+
+type Promo {
+  id: ID
+  panels: [CMSItemMedia]
+  list: [String]
+  searchQuery: String
+  title: String
+}
+
+input Radius {
+  loc: Coordinate!
+  distance: String!
+}
+
+type SearchHit {
+  meta: SearchHitMeta
+  hit: SearchResultDoc
+}
+
+type SearchHitMeta {
+  id: ID
+  type: String
+  url: String
+  title: String
+  snippet: String
+  language: String
+  publish_timestamp: Date
+  display_timestamp: Date
+  update_timestamp: Date
+  sort_timestamp: Date
+  tags(type: [String]): [SearchHitMetaTag]
+  image(dimensions: [String], max_width: Int, max_height: Int, min_width: Int, min_height: Int): [ImageCut]
+}
+
+type SearchHitMetaTag {
+  type: String
+  value: String
+  displayName: String
+}
+
+scalar SearchIndexQuery
+
+type SearchQuery {
+  query(index: String!, q: String, fq: String, page: Int, page_size: Int = 10, sort: SortOrder, type: [String], from: Date, to: Date, highlight: Boolean = false, facet: [String], bbox: BoundingBox, radius: Radius, spotlight: Boolean = false): SearchResponse
+  prefix(index: String!, q: String, fq: String, page: Int, page_size: Int = 10, sort: SortOrder, type: [String], from: Date, to: Date, highlight: Boolean = false, facet: [String], bbox: BoundingBox, radius: Radius, spotlight: Boolean = false): SearchResponse
+  topic(index: String!, topic_id: ID!, listed: Boolean = true, exclude: [ID!], q: String, fq: String, page: Int, page_size: Int = 10, sort: SortOrder, type: [String], from: Date, to: Date, highlight: Boolean = false, facet: [String], bbox: BoundingBox, radius: Radius, spotlight: Boolean = false): SearchResponse
+  sitesearch(index: String!, q: String, fq: String, page: Int, page_size: Int = 10, sort: SortOrder, type: [String], from: Date, to: Date, highlight: Boolean = false, facet: [String], spotlight: Boolean = false): SearchResponse
+}
+
+type SearchResponse {
+  meta: SearchResponseMeta
+  query: SearchIndexQuery
+  facets: [SearchResponseFacet]
+  hits: [SearchHit]
+}
+
+type SearchResponseFacet {
+  field: String
+  values: [SearchResponseFacetValue]
+}
+
+type SearchResponseFacetValue {
+  count: Int
+  value: OmniScalar
+}
+
+type SearchResponseMeta {
+  hits: Int
+  time: Int
+  page_size: Int
+  offset: Int
+}
+
+union SearchResultDoc = video | article | topicList
+
+enum SortOrder {
+  best
+  new
+  old
+}
+
+type Tokens {
+  templates: String
+  css: String
+  js: String
+}
+
+type article {
+  type: String
+  state: CMSItemState
+  noIndex: Boolean
+  date: Date
+  createdOn: Date
+  lastPublished: Date
+  id: ID
+  seoTitle: String
+  region: String
+  altLanguages(language: [String]): [AltLanguage]
+  headline: String
+  subhead: String
+  seoDescription: String
+  seoKeywords: String
+  slug: String
+  commenting: Boolean
+  tagline: String
+  tokenData(type: [String]): [CMSItemToken]
+  body: String
+  byline: String
+  public_id: ID
+  language: String
+  contributor: CMSItemContributor
+  keywordsDisplay(type: [String]): [CMSItemKeyword]
+  keywordsAll(type: [String]): [CMSItemKeyword]
+  approval: String
+  url: String
+  dataURI: String
+  primaryKeyword: ID
+  media: CMSItemMedia
+  preview: String
+}
+
+type topicList {
+  type: String
+  state: CMSItemState
+  noIndex: Boolean
+  date: Date
+  createdOn: Date
+  lastPublished: Date
+  id: ID
+  seoTitle: String
+  region: String
+  altLanguages(language: [String]): [AltLanguage]
+  title: String
+  body: String
+  description: String
+  searchQuery: String
+  category: String
+  shareImage: String
+  pageConfig: CMSTopicListPageConfig
+  keywordsDisplay(type: [String]): [CMSItemKeyword]
+  keywordsAll(type: [String]): [CMSItemKeyword]
+  topicSkin: String
+  tokens: Tokens
+  promos: [Promo]
+  list: [CMSListedItem]
+}
+
+type video {
+  type: String
+  state: CMSItemState
+  noIndex: Boolean
+  date: Date
+  createdOn: Date
+  lastPublished: Date
+  id: ID
+  seoTitle: String
+  region: String
+  altLanguages(language: [String]): [AltLanguage]
+  mediaPlaybackId: ID
+  headline: String
+  slug: String
+  language: String
+  url: String
+  keywordsDisplay(type: [String]): [CMSItemKeyword]
+  keywordsAll(type: [String]): [CMSItemKeyword]
+  title: String
+  description: String
+  internalNotes: String
+  blurb: String
+  bigBlurb: String
+  duration: String
+  mediaState: String
+  image: CMSItemMediaPhotoImage
+  playbacks(name: [String]): [CMSVideoPlaybackScenario]
+  authFlow: Boolean
+  flags: [String]
+}
